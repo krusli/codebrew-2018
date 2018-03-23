@@ -7,7 +7,7 @@ app.get('/', function(req, res) {
 
 if (process.env.ENV = 'PRODUCTION') {
     let port = process.env.PORT || 3000;
-    app.listen(port, () => console.log('Listening at port 80.'));
+    app.listen(port, () => console.log('Listening at port ' + port + ' on Heroku.'));
 }
 else {
     app.listen(3000, function() {   // same as () => {} (arrow function)
