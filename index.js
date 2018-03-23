@@ -6,7 +6,7 @@ app.get('/', function(req, res) {
 });
 
 if (process.env.ENV = 'PRODUCTION') {
-    app.listen(80, () => console.log('Listening at port 80.');
+    app.listen(80, () => console.log('Listening at port 80.'));
 }
 else {
     app.listen(3000, function() {   // same as () => {} (arrow function)
