@@ -32,8 +32,9 @@ app.use((err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
   }
-  res.status(500);
-  res.render('error', { error: err });
+  winston.error(err);
+  res.status(500).send(); // TODO use proper error code
+  // res.render('error', { error: err });
 });
 
 /* start the server */

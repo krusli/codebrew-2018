@@ -70,4 +70,46 @@ router.get('/login', (req, res) => {
   }
 })
 
+router.post('/profile', (req, res) => {
+  let bio = req.body.bio;
+  let bioLong = req.body.bioLong;
+  let id = req.body.id;
+
+  winston.debug(id);
+  if (id) {
+    User.findOne({_id: id})
+    .then(user => {
+      if (user) {
+        console.log(user);
+
+        if (bio)
+          user.bio = bio;
+        if (bioLong)
+          user.bioLong = bioLong;
+
+        return user.save();
+      } else {
+        throw 'UserNotFound'
+      }
+    })
+    .then(user => {
+      winston.debug('Saved user.');
+      res.send(user);
+    })
+    .catch(err => {
+      if (err.toString() == 'UserNotFound') {
+        winston.debug('UserNotFound');
+        res.send();
+      }
+      else
+        winston.debug(err);
+    })
+  }
+
+  else {
+    res.send();
+  }
+});
+
+
 module.exports = router;

@@ -12,6 +12,7 @@ const userSchema = new Schema({
 
   // profile
   bio: String,
+  bioLong: String,
   profilePhotos: [String],
   photos: [String]
 });
