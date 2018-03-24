@@ -1,6 +1,16 @@
 const express = require('express');   // imports express
 const app = express();
 const path = require('path');
+const mongoose = require('mongoose');
+
+// connect to MongoDB database
+mongoose.connect('mongodb://master:jtqbRpWvNpVv@ds123259.mlab.com:23259/codebrew-2018');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+    // we're connected!
+    console.log('Connected to MongoDB on mLab');
+});
 
 app.get('/', function(req, res) {
   // res.send('Hello world!');
