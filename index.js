@@ -1,4 +1,5 @@
 /* imports */
+const cors = require('cors')
 const path = require('path');
 const express = require('express');   // imports express
 const app = express();
@@ -8,6 +9,9 @@ const mongoose = globals.mongoose;
 const winston = globals.winston;
 
 /* routes */
+// CORS - cross origin resource sharing
+app.use(cors());
+
 app.get('/', (req, res) =>
   res.sendFile(path.join(__dirname, 'views/index.html')));
 
@@ -26,13 +30,6 @@ app.use((err, req, res, next) => {
   }
   res.status(500);
   res.render('error', { error: err });
-});
-
-// TODO HACK
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
 });
 
 /* start the server */
