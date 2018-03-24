@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const winston = require('winston');
 
+const faker = require('faker');
+
 // import models
 const User = require('./models/user');
 const Course = require('./models/course');
@@ -15,11 +17,13 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => winston.info('Connected to MongoDB'));
 
+let firstName = faker.name.firstName();
+let lastName = faker.name.lastName();
 var testUser = new User({
-  username: "krusli",
-  firstName: "Kenneth",
-  lastName: "Aloysius",
-  email: "rusli.kenneth@gmail.com"
+  username: firstName,
+  firstName: firstName,
+  lastName: lastName,
+  email: faker.internet.email()
 });
 
 User.find({username: testUser.username})
