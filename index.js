@@ -28,6 +28,13 @@ app.use((err, req, res, next) => {
   res.render('error', { error: err });
 });
 
+// TODO HACK
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 /* start the server */
 let port = process.env.PORT || 3000;
 app.listen(port, () => console.log('Listening at port ' + port));
