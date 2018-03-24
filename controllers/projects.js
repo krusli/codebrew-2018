@@ -81,6 +81,7 @@ router.post('/:projectID', (req, res) => {
   let title = req.body.title;
   let description = req.body.description;
   let until = Date.parse(req.body.until);
+  let sponsor = req.body.sponsor;
   let id = req.params.id;
 
   Project.findOne({_id: id})
@@ -105,17 +106,36 @@ router.post('/:projectID', (req, res) => {
   .catch(err => handleError(res, err));
 })
 
-// upload profile pic. TODO STUB
-router.post('/:projectID/profilepic', upload.single('pic'), (req, res) => {
-  let id = req.body.id;
+// upload profile pic
+router.post('/:projectID/profilePhoto', upload.single('pic'), (req, res) => {
+  let id = req.params.projectID;
   let file = req.file;
 
-  if (id) {
-    // TODO STUB
-  } else {
-    res.send();
-  }
+  Project.findOne({_id: id})
+  .then(project => {
+    if (!project)
+      throw 'ProjectNotFound';
+    project.profilePhoto = file.filename;
+    return project.save();
+  })
+  .then(project => res.send(project))
+  .catch(err => handleError(res, err));
+});
 
+// upload background
+router.post('/:projectID/background', upload.single('pic'), (req, res) => {
+  let id = req.params.projectID;
+  let file = req.file;
+
+  Project.findOne({_id: id})
+  .then(project => {
+    if (!project)
+      throw 'ProjectNotFound';
+    project.background = file.filename;
+    return project.save();
+  })
+  .then(project => res.send(project))
+  .catch(err => handleError(res, err));
 });
 
 

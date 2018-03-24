@@ -7,11 +7,12 @@ const projectSchema = {
   // author: Schema.ObjectId,
   author: String,
   contributors: [Schema.ObjectId],
+  sponsor: String,
   until: Date,
   current: {type: Number, default: 0},
   goal: Number,
-  background: Number,
-  profilePhoto: Number
+  background: String,
+  profilePhoto: String
 }
 
 module.exports = mongoose.model('Project', projectSchema)

@@ -74,6 +74,7 @@ router.get('/login', (req, res) => {
 })
 
 // modify profile by ID
+// TODO modify route to /profile/:userID
 router.post('/profile', (req, res) => {
   let bio = req.body.bio;
   let bioLong = req.body.bioLong;
