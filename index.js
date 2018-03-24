@@ -20,6 +20,7 @@ app.get('/', (req, res) =>
   res.sendFile(path.join(__dirname, 'views/index.html')));
 
 app.use('/users', require('./controllers/users'));
+app.use('/projects', require('./controllers/projects'));
 
 app.get('/uploads/:uploadname', (req, res) => {
   let filename = path.join(__dirname, 'uploads/' + req.params.uploadname);

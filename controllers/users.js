@@ -31,15 +31,17 @@ router.post('/', (req, res) => {
   .then(user => {
     winston.debug(user);
     winston.debug('User created successfully!');
+
+    res.send(user);
   })
   .catch(err => {
     if (err.toString() == 'UserAlreadyExists')
       winston.debug('UserAlreadyExists');
     else
       winston.debug(err);
+    res.status(400).send();
   })
 
-  res.send(req.body);
 })
 
 router.get('/login', (req, res) => {
@@ -71,6 +73,7 @@ router.get('/login', (req, res) => {
   }
 })
 
+// modify profile by ID
 router.post('/profile', (req, res) => {
   let bio = req.body.bio;
   let bioLong = req.body.bioLong;
