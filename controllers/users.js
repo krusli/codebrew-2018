@@ -53,7 +53,7 @@ router.get('/login', (req, res) => {
     .then(user => {
       if (user) {
         winston.debug(user);
-        res.send(user.id);
+        res.send({id: user.id});
       } else {
         throw 'UserNotFound'
       }
