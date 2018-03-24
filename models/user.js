@@ -6,8 +6,7 @@ const userSchema = new Schema({
   firstName: String,
   lastName: String,
   email: {type: String, unique: true},
-  timeCreated: {type: Date, default: Date.now},
-  courses: [Schema.ObjectId]
+  timeCreated: {type: Date, default: Date.now}
 });
 
 module.exports = mongoose.model('User', userSchema)
