@@ -1,21 +1,26 @@
 const express = require('express');   // imports express
 const app = express();
+
 const path = require('path');
 const mongoose = require('mongoose');
+const winston = require('winston');
 
-// connect to MongoDB database
+/* connect to MongoDB */
 mongoose.connect('mongodb://master:jtqbRpWvNpVv@ds123259.mlab.com:23259/codebrew-2018');
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-    // we're connected!
-    console.log('Connected to MongoDB on mLab');
-});
+db.once('open', () => winston.info('Connected to MongoDB'));
 
+/* routes */
 app.get('/', function(req, res) {
   // res.send('Hello world!');
   res.sendFile(path.join(__dirname, 'views/index.html'));
 });
+
+const User = require('./models/user');
+app.get('/users', (req, res) => {
+
+})
 
 // static files
 app.use(express.static(path.join(__dirname, 'static')));

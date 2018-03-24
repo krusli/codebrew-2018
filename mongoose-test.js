@@ -40,25 +40,3 @@ User.find({username: testUser.username})
   else
     winston.debug(err);
 })
-
-// var kittySchema = mongoose.Schema({
-//   name: String
-// });
-// var Kitten = mongoose.model('Kitten', kittySchema); // add to collection Kitten?
-//
-// var silence = new Kitten({ name: 'Silence' });
-// silence.save((err, cat) => {
-//     if (err) return console.error(err);
-//     console.log('Saved silence');
-// });
-//
-// // find all kittens
-// Kitten.find(function (err, kittens) {
-//     console.log('Finding kittens');
-//     if (err) return console.error(err);
-//     console.log(kittens);
-//
-//     db.close();
-// })
-//
-//
