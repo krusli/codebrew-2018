@@ -1,12 +1,16 @@
 /* imports */
 const cors = require('cors')
 const path = require('path');
+const bodyParser = require('body-parser');
 const express = require('express');   // imports express
 const app = express();
 
 const globals = require('./globals');
 const mongoose = globals.mongoose;
 const winston = globals.winston;
+
+// app.use(bodyParser.json({ type: 'application/*+json' }))
+app.use(bodyParser.json());
 
 /* routes */
 // CORS - cross origin resource sharing

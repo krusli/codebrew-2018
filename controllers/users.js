@@ -18,4 +18,27 @@ router.get('/', (req, res) => {
   .catch(err => winston.error(err));
 });
 
+router.post('/', (req, res) => {
+  User.find({username: req.body.username})
+  .then(user => {
+    if (user.length) {
+      throw 'UserAlreadyExists';
+    } else {
+      return User.create(req.body);
+    }
+  })
+  .then(user => {
+    winston.debug(user);
+    winston.debug('User created successfully!');
+  })
+  .catch(err => {
+    if (err.toString() == 'UserAlreadyExists')
+      winston.debug('UserAlreadyExists');
+    else
+      winston.debug(err);
+  })
+
+  res.send(req.body);
+})
+
 module.exports = router;
