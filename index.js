@@ -1,10 +1,37 @@
-var express = require('express');   // imports express
-var app = express();
+/* imports */
+const cors = require('cors')
+const path = require('path');
+const express = require('express');   // imports express
+const app = express();
 
-app.get('/', function(req, res) {
-    res.send('Hello world!');
+const globals = require('./globals');
+const mongoose = globals.mongoose;
+const winston = globals.winston;
+
+/* routes */
+// CORS - cross origin resource sharing
+app.use(cors());
+
+app.get('/', (req, res) =>
+  res.sendFile(path.join(__dirname, 'views/index.html')));
+
+app.use('/users', require('./controllers/users'));
+
+// static files
+app.use(express.static(path.join(__dirname, 'static')));
+
+// 404 handler
+app.use((req, res, next) => res.status(404).send("Error 404: page not found"));
+
+// error handler
+app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
+  res.status(500);
+  res.render('error', { error: err });
 });
 
-app.listen(3000, function() {   // TODO change this to port 80 before deployment
-    console.log('Listening at port 3000.');
-});
+/* start the server */
+let port = process.env.PORT || 3000;
+app.listen(port, () => console.log('Listening at port ' + port));
