@@ -6,7 +6,14 @@ const userSchema = new Schema({
   firstName: String,
   lastName: String,
   email: {type: String, unique: true},
-  timeCreated: {type: Date, default: Date.now}
+  timeCreated: {type: Date, default: Date.now},
+
+  type: String, // donator, donatee
+
+  // profile
+  bio: String,
+  profilePhotos: [String],
+  photos: [String]
 });
 
 module.exports = mongoose.model('User', userSchema)

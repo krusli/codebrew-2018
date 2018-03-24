@@ -8,15 +8,15 @@ const winston = globals.winston;
 // models
 const User = require('../models/user');
 
-router.get('/', (req, res) => {
-  // query the MongoDB database for all users
-  User.find({})
-  .exec()
-  .then(users => {  // once we get the response
-    res.send(users);
-  })
-  .catch(err => winston.error(err));
-});
+// router.get('/', (req, res) => {
+//   // query the MongoDB database for all users
+//   User.find({})
+//   .exec()
+//   .then(users => {  // once we get the response
+//     res.send(users);
+//   })
+//   .catch(err => winston.error(err));
+// });
 
 router.post('/', (req, res) => {
   User.find({username: req.body.username})
@@ -39,6 +39,35 @@ router.post('/', (req, res) => {
   })
 
   res.send(req.body);
+})
+
+router.get('/login', (req, res) => {
+  // get vars from query
+  console.log(req.query);
+  let email = req.query.email;
+
+  // TODO password validation; use middleware
+  if (email) {
+    User.findOne({email: email})
+    .then(user => {
+      if (user) {
+        console.log(user);
+        res.send(user.id);
+      } else {
+        throw 'UserNotFound'
+      }
+    })
+    .catch(err => {
+      if (err.toString() == 'UserNotFound') {
+        winston.debug('UserNotFound');
+        res.send();
+      }
+      else
+        winston.debug(err);
+    })
+  } else {
+    res.send();
+  }
 })
 
 module.exports = router;
