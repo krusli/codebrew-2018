@@ -19,11 +19,14 @@ db.once('open', () => winston.info('Connected to MongoDB'));
 
 let firstName = faker.name.firstName();
 let lastName = faker.name.lastName();
+let username = faker.internet.userName();
+let email = faker.internet.email();
+
 var testUser = new User({
-  username: firstName,
+  username: username,
   firstName: firstName,
   lastName: lastName,
-  email: faker.internet.email()
+  email: email
 });
 
 User.find({username: testUser.username})

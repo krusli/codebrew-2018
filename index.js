@@ -2,16 +2,12 @@ const express = require('express');   // imports express
 const app = express();
 
 const path = require('path');
-const mongoose = require('mongoose');
-const winston = require('winston');
+// const mongoose = require('mongoose');
+// const winston = require('winston');
 
-winston.level = 'debug';
-
-/* connect to MongoDB */
-mongoose.connect('mongodb://master:jtqbRpWvNpVv@ds123259.mlab.com:23259/codebrew-2018');
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', () => winston.info('Connected to MongoDB'));
+const globals = require('./globals');
+const mongoose = globals.mongoose;
+const winston = globals.winston;
 
 /* routes */
 app.get('/', function(req, res) {
@@ -19,16 +15,7 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'views/index.html'));
 });
 
-const User = require('./models/user');
-app.get('/users', (req, res) => {
-  // query the MongoDB database for all users
-  User.find({})
-  .exec()
-  .then(users => {  // once we get the response
-    res.send(users);
-  })
-  .catch(err => winston.error(err));
-})
+app.use('/users', require('./controllers/users'));
 
 // static files
 app.use(express.static(path.join(__dirname, 'static')));
