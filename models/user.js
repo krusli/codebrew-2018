@@ -13,7 +13,7 @@ const userSchema = new Schema({
   // profile
   bio: String,
   bioLong: String,
-  profilePhotos: [String],
+  profilePhoto: String,
   photos: [String]
 });
 

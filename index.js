@@ -21,6 +21,11 @@ app.get('/', (req, res) =>
 
 app.use('/users', require('./controllers/users'));
 
+app.get('/uploads/:uploadname', (req, res) => {
+  let filename = path.join(__dirname, 'uploads/' + req.params.uploadname);
+  res.sendFile(filename);
+});
+
 // static files
 app.use(express.static(path.join(__dirname, 'static')));
 

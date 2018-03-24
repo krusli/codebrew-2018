@@ -4,6 +4,7 @@ const router = express.Router();
 const globals = require('../globals');
 const mongoose = globals.mongoose;
 const winston = globals.winston;
+const upload = globals.upload;
 
 // models
 const User = require('../models/user');
@@ -51,7 +52,7 @@ router.get('/login', (req, res) => {
     User.findOne({email: email})
     .then(user => {
       if (user) {
-        console.log(user);
+        winston.debug(user);
         res.send(user.id);
       } else {
         throw 'UserNotFound'
@@ -73,6 +74,8 @@ router.get('/login', (req, res) => {
 router.post('/profile', (req, res) => {
   let bio = req.body.bio;
   let bioLong = req.body.bioLong;
+  let firstName = req.body.firstName;
+  let lastName = req.body.lastName;
   let id = req.body.id;
 
   winston.debug(id);
@@ -80,12 +83,16 @@ router.post('/profile', (req, res) => {
     User.findOne({_id: id})
     .then(user => {
       if (user) {
-        console.log(user);
+        winston.debug(user);
 
         if (bio)
           user.bio = bio;
         if (bioLong)
           user.bioLong = bioLong;
+        if (firstName)
+          user.firstName = firstName;
+        if (lastName)
+          user.lastName = lastName;
 
         return user.save();
       } else {
@@ -111,5 +118,41 @@ router.post('/profile', (req, res) => {
   }
 });
 
+
+router.post('/profilepic', upload.single('pic'), (req, res) => {
+  let id = req.body.id;
+  let file = req.file;
+
+  if (id) {
+    User.findOne({_id: id})
+    .then(user => {
+      if (user) {
+        winston.debug(user);
+
+        user.profilePhoto = req.file.filename;
+        user.photos.push(req.file.filename);
+
+        return user.save();
+      } else {
+        throw 'UserNotFound'
+      }
+    })
+    .then(user => {
+      winston.debug('Saved user (upload photo).');
+      res.send(user);
+    })
+    .catch(err => {
+      if (err.toString() == 'UserNotFound') {
+        winston.debug('UserNotFound');
+        res.send();
+      }
+      else
+        winston.debug(err);
+    })
+  } else {
+    res.send();
+  }
+
+});
 
 module.exports = router;
